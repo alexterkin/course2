@@ -21,22 +21,12 @@ public class JavaQuestionController {
     }
 
     @GetMapping("/remove")
-    public String removeQuestion(String question, String answer) {
-        Question q = service.remove(new Question(question, answer));
-        if (q == null) {
-            return "Question not found";
-        } else {
-            return q.toString() + " was deleted";
-        }
+    public Question removeQuestion(String question, String answer) {
+        return service.remove(new Question(question, answer));
     }
 
-    @GetMapping("")
+    @GetMapping
     public Collection<Question> getQuestions() {
         return service.getAll();
-    }
-
-    @GetMapping("/find/{findField}")
-    public Collection<Question> find(String findField) {
-        return service.find(findField);
     }
 }

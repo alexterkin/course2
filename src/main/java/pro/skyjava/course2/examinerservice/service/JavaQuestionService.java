@@ -1,12 +1,12 @@
 package pro.skyjava.course2.examinerservice.service;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import pro.skyjava.course2.examinerservice.domain.Question;
+import pro.skyjava.course2.examinerservice.exceptions.NoEnoughQuestionsException;
+import pro.skyjava.course2.examinerservice.exceptions.QuestionNotFoundException;
 
 import java.util.*;
 
-@Repository
 @Service
 public class JavaQuestionService implements QuestionServices {
     private final Set<Question> questions;
@@ -32,13 +32,14 @@ public class JavaQuestionService implements QuestionServices {
     @Override
     public Question remove(Question question) {
         boolean result = this.questions.remove(question);
-        return result ? question : null;
+        if (!result) {
+            throw new QuestionNotFoundException();
+        } return question;
     }
 
     @Override
     public Collection<Question> getAll() {
-        return this.questions
-                .stream().toList();
+        return Collections.unmodifiableSet(questions);
     }
 
     @Override
@@ -46,16 +47,10 @@ public class JavaQuestionService implements QuestionServices {
         List<Question> questionList = this.questions
                 .stream().toList();
         if (questionList.isEmpty()) {
-            return null;
+            throw new NoEnoughQuestionsException();
         }
 
         int randomIndex = random.nextInt(questionList.size());
         return questionList.get(randomIndex);
-    }
-
-    @Override
-    public List<Question> find(String findField) {
-        return this.questions
-                .stream().toList();
     }
 }

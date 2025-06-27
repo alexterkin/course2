@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pro.skyjava.course2.examinerservice.domain.Question;
-import pro.skyjava.course2.examinerservice.exceptions.NoEnoughQuestions;
+import pro.skyjava.course2.examinerservice.exceptions.NoEnoughQuestionsException;
 import pro.skyjava.course2.examinerservice.service.ExaminerServiceImpl;
 import pro.skyjava.course2.examinerservice.service.JavaQuestionService;
 
@@ -43,7 +43,7 @@ public class ExaminerServiceImplTest {
         lenient().when(service.getAll()).thenReturn(List.of(
                 new Question("question_0", "answer_0")
         ));
-        assertThrows(NoEnoughQuestions.class, () -> {
+        assertThrows(NoEnoughQuestionsException.class, () -> {
             examinerService.getQuestions(10);});
 
     }
